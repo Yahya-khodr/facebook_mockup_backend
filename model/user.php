@@ -3,6 +3,7 @@
 
 class User
 {
+
     //Database connection
     private $con;
 
@@ -27,8 +28,8 @@ class User
     function signUp()
     {
         if ($this->isAlreadyRegistered()) {
-          return false; //user already regeistered
-            
+            return false; //user already regeistered
+
         } else {
             $add_user = $this->con->prepare("INSERT INTO users(first_name, last_name, email, password, profile_image) VALUES (?,?,?,?,?) ");
             $add_user->bind_param("sssss", $this->first_name, $this->last_name, $this->email, $this->password, $this->profile_image);

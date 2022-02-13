@@ -19,6 +19,9 @@ class Database
         }
         return $this->con;
     }
+    public function closeDatabase(){
+        $this->con->close();
+    }
 }
 
 // credentials
