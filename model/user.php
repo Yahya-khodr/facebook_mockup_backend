@@ -13,7 +13,6 @@ class User
     public $password;
     public $profile_image;
 
-
     public function __construct($db)
     {
         $this->con = $db;
@@ -28,31 +27,16 @@ class User
     function signUp()
     {
         if ($this->isAlreadyRegistered()) {
-          return false;
-            //user already regeistered
+          return false; //user already regeistered
+            
         } else {
             $add_user = $this->con->prepare("INSERT INTO users(first_name, last_name, email, password, profile_image) VALUES (?,?,?,?,?) ");
             $add_user->bind_param("sssss", $this->first_name, $this->last_name, $this->email, $this->password, $this->profile_image);
             $add_user->execute();
             return $add_user;
-            
         }
-        
-        
     }
 
-    //Check if user already registered 
-    // $check_user = $mysqli->prepare("SELECT email FROM users WHERE email = ?");
-    // $check_user->bind_param("s", $email);
-    // $check_user->execute();
-
-    // $check_user->store_result();
-    // $num_rows = $check_user->num_rows;
-    // $check_user->bind_result($email);
-    // $check_user->fetch();
-    // $array_check = [];
-
-    // if ($num_rows == 0) {
     function isAlreadyRegistered()
     {
         $check_user = $this->con->prepare("SELECT email FROM users WHERE email = ?");

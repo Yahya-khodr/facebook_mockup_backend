@@ -23,7 +23,7 @@ if ($user->signUp()) {
     $user_arr = array(
         "status" => true,
         "message" => "Successfully added a new user",
-        "first_name" => $fname,
+        "first_name" => $user->first_name,
     );
 } else {
     $user_arr = array(
