@@ -23,6 +23,14 @@ class Status
         return $create_status;
     }
 
+    public function updateStatus($id)
+    {
+        $update_status = $this->con->prepare("UPDATE posts SET post_content = ? WHERE post_id = $id ");
+        $update_status->bind_param("s", $this->post_content);
+        $update_status->execute();
+        return $update_status;
+    }
+
     public function deleteStatus($id)
     {
         $delete_status = $this->con->prepare("DELETE FROM posts WHERE post_id  =$id");
