@@ -6,6 +6,7 @@ class Status
     private $con;
 
     // class properties
+
     public $post_content;
     public $user;
 
@@ -20,5 +21,12 @@ class Status
         $create_status->bind_param("ss", $this->post_content, $this->user);
         $create_status->execute();
         return $create_status;
+    }
+
+    public function deleteStatus($id)
+    {
+        $delete_status = $this->con->prepare("DELETE FROM posts WHERE post_id  =$id");
+        $delete_status->execute();
+        return $delete_status;
     }
 }

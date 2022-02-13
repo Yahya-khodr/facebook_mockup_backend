@@ -11,7 +11,7 @@ $post_content = $_POST["post_content"];
 $user = $_POST["created_by"];
 $status->post_content  = $post_content;
 $status->user = $user;
-
+// ADD new status
 if (isset($post_content, $user)) {
 
     try {
