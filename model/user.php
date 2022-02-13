@@ -1,11 +1,12 @@
 
-<?php 
+<?php
 
-class User{
+class User
+{
+    //Database connection
     private $con;
 
     // object properties
-    public $id;
     public $first_name;
     public $last_name;
     public $email;
@@ -13,18 +14,58 @@ class User{
     public $profile_image;
 
 
-    public function __construct($db){
+    public function __construct($db)
+    {
         $this->con = $db;
     }
-    function login(){
-
+    function login()
+    {
         $query = $this->con->prepare("SELECT id FROM users WHERE email = ? AND password = ? ");
         $query->bind_param("ss", $this->email, $this->password);
         $query->execute();
-        
         return $query;
     }
+    function signUp()
+    {
+        if ($this->isAlreadyRegistered()) {
+          return false;
+            //user already regeistered
+        } else {
+            $add_user = $this->con->prepare("INSERT INTO users(first_name, last_name, email, password, profile_image) VALUES (?,?,?,?,?) ");
+            $add_user->bind_param("sssss", $this->first_name, $this->last_name, $this->email, $this->password, $this->profile_image);
+            $add_user->execute();
+            return $add_user;
+            
+        }
+        
+        
+    }
 
+    //Check if user already registered 
+    // $check_user = $mysqli->prepare("SELECT email FROM users WHERE email = ?");
+    // $check_user->bind_param("s", $email);
+    // $check_user->execute();
 
-    
+    // $check_user->store_result();
+    // $num_rows = $check_user->num_rows;
+    // $check_user->bind_result($email);
+    // $check_user->fetch();
+    // $array_check = [];
+
+    // if ($num_rows == 0) {
+    function isAlreadyRegistered()
+    {
+        $check_user = $this->con->prepare("SELECT email FROM users WHERE email = ?");
+        $check_user->bind_param("s", $this->email);
+        $check_user->execute();
+        $check_user->store_result();
+        $check_user->bind_result($this->email);
+        $check_user->fetch();
+        $num_rows = $check_user->num_rows;
+        if ($num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
