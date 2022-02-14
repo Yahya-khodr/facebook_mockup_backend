@@ -77,7 +77,8 @@ class Friend
         return $block_friend;
     }
 
-    public function unblockFriend(){
+    public function unblockFriend()
+    {
         // to be implemented
     }
 
@@ -94,5 +95,13 @@ class Friend
         $delete_request = $this->con->prepare("DELETE FROM friend_requests WHERE sender_id = $sender AND reciever_id = $reciever");
         $delete_request->execute();
         return $delete_request;
+    }
+
+    public function getFriendRequests($id)
+    {
+        $requests = $this->con->prepare("SELECT u.first_name,u.last_name,u.id,u.profile_image FROM friend_requests fr,users u  WHERE u.id = fr.sender_id AND fr.reciever_id = ?");
+        $requests->bind_param("i", $id);
+        $requests->execute();
+        return $requests;
     }
 }
