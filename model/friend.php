@@ -25,7 +25,12 @@ class Friend
             return $add_friend;
         }
     }
-
+    public function acceptFriend(){
+        $accept_friend = $this->con->prepare("INSERT INTO friends(user_one, user_two) VALUES (?,?)");
+        $accept_friend->bind_param("ii",$this->user_one, $this->user_two);
+        $accept_friend->execute();
+        return $accept_friend;
+    }
 
     public function isAlreadyFriends()
     {
