@@ -16,7 +16,7 @@ class Friend
 
     public function addFriend()
     {
-        if ($this->isAlreadyFriends()) {
+        if ($this->alreadyRequested()) {
             return false;
         } else {
             $add_friend = $this->con->prepare("INSERT INTO friend_requests(sender_id,reciever_id) VALUES (?,?)");
@@ -25,26 +25,52 @@ class Friend
             return $add_friend;
         }
     }
-    public function acceptFriend(){
-        $accept_friend = $this->con->prepare("INSERT INTO friends(user_one, user_two) VALUES (?,?)");
-        $accept_friend->bind_param("ii",$this->user_one, $this->user_two);
-        $accept_friend->execute();
-        return $accept_friend;
-    }
-
-    public function isAlreadyFriends()
+    public function acceptFriend()
     {
-        $check_friends = $this->con->prepare("SELECT id FROM friend_requests WHERE sender_id = ? AND reciever_id = ?");
-        $check_friends->bind_param("ii", $this->user_one, $this->user_two);
-        $check_friends->execute();
-        $check_friends->store_result();
-        $check_friends->bind_result($this->id);
-        $check_friends->fetch();
-        $num_rows = $check_friends->num_rows;
+        if ($this->alreadyFriends()) {
+            return false;
+        } else {
+            $accept_friend = $this->con->prepare("INSERT INTO friends(user_one, user_two) VALUES (?,?)");
+            $accept_friend->bind_param("ii", $this->user_one, $this->user_two);
+            $accept_friend->execute();
+            return $accept_friend;
+        }
+    }
+    public function alreadyFriends()
+    {
+        $check_friend = $this->con->prepare("SELECT friends_id FROM friends WHERE user_one =? AND user_two = ?");
+        $check_friend->bind_param("ii", $this->user_one, $this->user_two);
+        $check_friend->execute();
+        $check_friend->store_result();
+        $check_friend->bind_result($this->id);
+        $check_friend->fetch();
+        $num_rows = $check_friend->num_rows;
         if ($num_rows > 0) {
             return true;
         } else {
             return false;
         }
+    }
+    public function alreadyRequested()
+    {
+        $check_request = $this->con->prepare("SELECT id FROM friend_requests WHERE sender_id = ? AND reciever_id = ?");
+        $check_request->bind_param("ii", $this->user_one, $this->user_two);
+        $check_request->execute();
+        $check_request->store_result();
+        $check_request->bind_result($this->id);
+        $check_request->fetch();
+        $num_rows = $check_request->num_rows;
+        if ($num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteRequest($sender, $reciever)
+    {
+        $delete_request = $this->con->prepare("DELETE FROM friend_requests WHERE sender_id = $sender AND reciever_id = $reciever");
+        $delete_request->execute();
+        return $delete_request;
     }
 }
