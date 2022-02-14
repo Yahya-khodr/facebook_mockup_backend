@@ -67,6 +67,14 @@ class Friend
         }
     }
 
+    public function removeFriend()
+    {
+        $remove_friend = $this->con->prepare("DELETE FROM friends WHERE user_one =? AND user_two =? OR user_one =? AND user_two = ?");
+        $remove_friend->bind_param("iiii", $this->user_one, $this->user_two, $this->user_two, $this->user_one);
+        $remove_friend->execute();
+        return $remove_friend;
+    }
+
     public function deleteRequest($sender, $reciever)
     {
         $delete_request = $this->con->prepare("DELETE FROM friend_requests WHERE sender_id = $sender AND reciever_id = $reciever");
