@@ -1,11 +1,12 @@
 <?php
 
+
 include("../model/database.php");
 include("../model/user.php");
-
 $database = new Database();
 $db = $database->getConnection();
 $user = new User($db);
+
 
 if (isset($_POST["email"])) {
     $user->email = $db->real_escape_string($_POST["email"]);
@@ -39,4 +40,3 @@ if ($num_rows == 0) {
     );
 }
 print_r(json_encode($user_array));
-
