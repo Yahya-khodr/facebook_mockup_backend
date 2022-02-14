@@ -67,6 +67,20 @@ class Friend
         }
     }
 
+    public function blockFriend()
+    {
+        $block_friend = $this->con->prepare("INSERT INTO blocked_list(blocked_user, blocked_by) VALUES (?,?)");
+        $block_friend->bind_param("ii", $this->user_one, $this->user_two);
+        $block_friend->execute();
+        $this->removeFriend();
+        $this->deleteRequest($this->user_one, $this->user_two);
+        return $block_friend;
+    }
+
+    public function unblockFriend(){
+        
+    }
+
     public function removeFriend()
     {
         $remove_friend = $this->con->prepare("DELETE FROM friends WHERE user_one =? AND user_two =? OR user_one =? AND user_two = ?");
