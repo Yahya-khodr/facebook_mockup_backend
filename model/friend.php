@@ -79,7 +79,10 @@ class Friend
 
     public function unblockFriend()
     {
-        // to be implemented
+        $unblock_friend = $this->con->prepare("DELETE FROM blocked_list WHERE blocked_user = ? AND blocked_by = ? OR blocked_user =? AND blocked_by = ?");
+        $unblock_friend->bind_param("iiii", $this->user_one, $this->user_two,$this->user_two, $this->user_one,);
+        $unblock_friend->execute();
+        return $unblock_friend;
     }
 
     public function removeFriend()
