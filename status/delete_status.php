@@ -13,4 +13,9 @@ $status->id = $status_id;
 //DELETE status
 if (isset($status_id)) {
     $status->deleteStatus($status_id);
+    $delete_arr = array(
+        "status" => true,
+        "message" => "Status Deleted !",
+    );
 }
+print_r(json_encode($delete_arr));

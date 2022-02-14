@@ -78,7 +78,7 @@ class Friend
     }
 
     public function unblockFriend(){
-        
+        // to be implemented
     }
 
     public function removeFriend()
