@@ -20,18 +20,19 @@ $user->email = $email;
 $user->password = hash("sha256", $password);
 $user->profile_image = $profile_image;
 
+if (isset($first_name, $last_name, $email, $password, $profile_image)) {
+    if ($user->signUp()) {
 
-if ($user->signUp()) {
-
-    $user_arr = array(
-        "status" => true,
-        "message" => "Successfully added a new user",
-        "first_name" => $user->first_name,
-    );
-} else {
-    $user_arr = array(
-        "status" => false,
-        "message" => "User already exist",
-    );
+        $user_arr = array(
+            "status" => true,
+            "message" => "Successfully added a new user",
+            "first_name" => $user->first_name,
+        );
+    } else {
+        $user_arr = array(
+            "status" => false,
+            "message" => "User already exist",
+        );
+    }
+    print_r(json_encode($user_arr));
 }
-print_r(json_encode($user_arr));
