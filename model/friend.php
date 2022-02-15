@@ -80,7 +80,7 @@ class Friend
     public function unblockFriend()
     {
         $unblock_friend = $this->con->prepare("DELETE FROM blocked_list WHERE blocked_user = ? AND blocked_by = ? OR blocked_user =? AND blocked_by = ?");
-        $unblock_friend->bind_param("iiii", $this->user_one, $this->user_two,$this->user_two, $this->user_one,);
+        $unblock_friend->bind_param("iiii", $this->user_one, $this->user_two, $this->user_two, $this->user_one,);
         $unblock_friend->execute();
         return $unblock_friend;
     }
@@ -106,5 +106,14 @@ class Friend
         $requests->bind_param("i", $id);
         $requests->execute();
         return $requests;
+    }
+
+    public function getFriends($id)
+    {
+        $friends = $this->con->prepare("SELECT u.first_name, u.last_name, u.profile_image FROM friends f, users u 
+        WHERE f.user_one = u.id AND f.user_two = ? OR f.user_two = u.id AND f.user_one = ? ");
+        $friends->bind_param("ii",$id,$id);
+        $friends->execute();
+        return $friends;
     }
 }
