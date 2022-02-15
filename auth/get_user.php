@@ -5,7 +5,7 @@ include("../model/user.php");
 $database = new Database();
 $db = $database->getConnection();
 $user = new User($db);
-$user_id = $_POST["user_id"];
+$user_id = $_GET["user_id"];
 
 if (isset($user_id)) {
     $user_request = $user->getUserById($user_id);
