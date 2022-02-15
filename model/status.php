@@ -9,6 +9,7 @@ class Status
 
     public $post_content;
     public $user;
+    public $like;
 
     // functions
     public function __construct($db)
@@ -36,5 +37,14 @@ class Status
         $delete_status = $this->con->prepare("DELETE FROM posts WHERE post_id  =$id");
         $delete_status->execute();
         return $delete_status;
+    }
+
+    public function likeStatus($id)
+    {
+        $this->like++;
+        $like_status = $this->con->prepare("UPDATE posts SET likes= ? WHERE post_id = $id");
+        $like_status->bind_param("i",$this->like);
+        $like_status->execute();
+        return $like_status;
     }
 }

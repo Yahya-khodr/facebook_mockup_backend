@@ -37,6 +37,13 @@ class User
             return $add_user;
         }
     }
+    public function getUserById($id)
+    {
+        $user_data = $this->con->prepare("SELECT u.first_name, u.last_name, u.email,u.profile_image  FROM users u WHERE id = ?");
+        $user_data->bind_param("i", $id);
+        $user_data->execute();
+        return $user_data;
+    }
 
     public function isAlreadyRegistered()
     {
