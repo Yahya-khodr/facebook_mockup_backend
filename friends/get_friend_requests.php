@@ -5,7 +5,7 @@ include("../model/friend.php");
 $database = new Database();
 $db = $database->getConnection();
 $friend = new Friend($db);
-$user_id = $_POST["user_id"];
+$user_id = $_GET["user_id"];
 
 
 if (isset($user_id)) {
