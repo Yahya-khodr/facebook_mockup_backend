@@ -12,34 +12,24 @@ $last_name = $_POST["last_name"];
 $email = $_POST["email"];
 $password = $_POST["password"];
 
+$profile_image = $_FILES['profile_image'];
 
-
-$profile_image = $_FILES['profile_image']['name'];
+$extension = pathinfo($profile_image['name'], PATHINFO_EXTENSION);
 $target_dir = "C:/xampp\htdocs/facebook_mockup/backend/images/";
-$target_file = $target_dir . basename($_FILES["profile_image"]["name"]);
+$new_name = time() . '.' . $extension;
 
-// Select file type
-$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+move_uploaded_file($profile_image['tmp_name'], $target_dir . $new_name);
+$profile_url = $target_dir . $new_name;
+$data = array(
+    'image_source' =>    $profile_url
+);
 
-// Valid file extensions
-$extensions_arr = array("jpg", "jpeg", "png", "gif");
-
-// Check extension
-if (in_array($imageFileType, $extensions_arr)) {
-
-    // Upload file
-    if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target_dir . $profile_image)) {
-        // Convert to base64 
-        $image_base64 = base64_encode(file_get_contents($target_dir . $profile_image));
-        $image = 'data:image/' . $imageFileType . ';base64,' . $image_base64;
-    }
-}
 
 $user->first_name = $first_name;
 $user->last_name = $last_name;
 $user->email = $email;
 $user->password = hash("sha256", $password);
-$user->profile_image = $profile_image;
+$user->profile_image = $profile_url;
 
 
 
@@ -53,6 +43,7 @@ if (isset($first_name, $last_name, $email, $password, $profile_image)) {
             "status" => true,
             "message" => "Successfully added a new user",
             "first_name" => $user->first_name,
+            "profile_url" => $data,
         );
     } else {
         $user_arr = array(
