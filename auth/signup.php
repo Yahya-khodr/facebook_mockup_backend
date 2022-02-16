@@ -15,7 +15,7 @@ $password = $_POST["password"];
 $profile_image = $_FILES['profile_image'];
 
 $extension = pathinfo($profile_image['name'], PATHINFO_EXTENSION);
-$target_dir = "C:/xampp/htdocs/facebook_mockup/frontend/assets/";
+$target_dir = "C:/xampp/htdocs/facebook_mockup/frontend/assets/cached/";
 $new_name = time() . '.' . $extension;
 
 move_uploaded_file($profile_image['tmp_name'], $target_dir . $new_name);

@@ -43,8 +43,17 @@ class Status
     {
         $this->like++;
         $like_status = $this->con->prepare("UPDATE posts SET likes= ? WHERE post_id = $id");
-        $like_status->bind_param("i",$this->like);
+        $like_status->bind_param("i", $this->like);
         $like_status->execute();
         return $like_status;
+    }
+    public function getAllStatus($id)
+    {
+        $all_status = $this->con->prepare("SELECT * FROM posts p , friends f, users u 
+         WHERE not exists (SELECT 1 FROM blocked_list b WHERE b.blocked_by = ? AND b.blocked_user = u.id)
+         AND WHERE f.user_one = ? AND f.user_two = u.id OR f.user_two = ? AND f.user_one = u.id ");
+        $all_status->bind_param("iii", $id, $id, $id);
+        $all_status->execute();
+        return $all_status;
     }
 }
