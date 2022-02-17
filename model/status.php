@@ -48,8 +48,10 @@ class Status
         return $like_status;
     }
     public function getAllStatus()
+
     {
-        $all_status = $this->con->prepare("SELECT * FROM posts");
+        $all_status = $this->con->prepare("SELECT u.first_name, u.last_name , p.created_by ,u.profile_image, p.likes , p.post_content, p.created_at
+         FROM posts p , users u WHERE p.created_by = u.id ORDER BY p.created_at DESC");
         $all_status->execute();
         return $all_status;
     }
